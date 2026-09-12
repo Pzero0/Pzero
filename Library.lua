@@ -360,6 +360,7 @@ local Templates = {
         Position = UDim2.fromOffset(6, 6),
         Size = UDim2.fromOffset(720, 600),
         IconSize = UDim2.fromOffset(30, 30),
+        IconColor = nil,
 
         AutoShow = true,
         Center = true,
@@ -447,6 +448,8 @@ local Templates = {
 
         Risky = false,
         Disabled = false,
+        Lock = false,
+        ColorText = nil,
         Visible = true,
     },
     Input = {
@@ -605,6 +608,41 @@ local function GetSchemeValue(Index)
     end
 
     return Library.Scheme[Index]
+end
+
+local NamedColors = {
+    red = Color3.fromRGB(255, 60, 60),
+    green = Color3.fromRGB(60, 200, 90),
+    blue = Color3.fromRGB(70, 130, 255),
+    yellow = Color3.fromRGB(255, 220, 60),
+    orange = Color3.fromRGB(255, 150, 50),
+    purple = Color3.fromRGB(160, 90, 255),
+    pink = Color3.fromRGB(255, 110, 180),
+    cyan = Color3.fromRGB(70, 220, 220),
+    white = Color3.fromRGB(255, 255, 255),
+    black = Color3.fromRGB(0, 0, 0),
+    gray = Color3.fromRGB(150, 150, 150),
+    grey = Color3.fromRGB(150, 150, 150),
+}
+
+function Library:ResolveColorText(Value)
+    if typeof(Value) == "Color3" then
+        return Value
+    end
+
+    if typeof(Value) == "string" then
+        local Named = NamedColors[Value:lower()]
+        if Named then
+            return Named
+        end
+
+        local SchemeColor = Library.Scheme[Value]
+        if SchemeColor then
+            return SchemeColor
+        end
+    end
+
+    return nil
 end
 
 --// Basic Functions \\--
@@ -4522,6 +4560,7 @@ do
             Data.DoesWrap = Params.DoesWrap or false
             Data.Size = Params.Size or 14
             Data.Visible = Params.Visible or true
+            Data.ColorText = Params.ColorText
             Data.Idx = typeof(Second) == "table" and First or nil
         else
             Data.Text = First or ""
@@ -4529,6 +4568,7 @@ do
             Data.Size = 14
             Data.Visible = true
             Data.Idx = select(3, ...) or nil
+            Data.ColorText = select(4, ...) or nil
         end
 
         local Groupbox = self
@@ -4540,6 +4580,7 @@ do
 
             Text = Data.Text,
             DoesWrap = Data.DoesWrap,
+            ColorText = Data.ColorText,
 
             Addons = Addons,
 
@@ -4556,6 +4597,16 @@ do
             TextXAlignment = Groupbox.IsKeyTab and Enum.TextXAlignment.Center or Enum.TextXAlignment.Left,
             Parent = Container,
         })
+
+        if Label.ColorText then
+            local ResolvedColorText = Library:ResolveColorText(Label.ColorText)
+            if ResolvedColorText then
+                TextLabel.TextColor3 = ResolvedColorText
+                if Library.Registry[TextLabel] then
+                    Library.Registry[TextLabel].TextColor3 = nil
+                end
+            end
+        end
 
         function Label:Display()
             if not Label.DoesWrap then
@@ -4688,6 +4739,8 @@ do
 
                 Info.Risky = Params.Risky or false
                 Info.Disabled = Params.Disabled or false
+                Info.Lock = Params.Lock or false
+                Info.ColorText = Params.ColorText
                 Info.Visible = Params.Visible or true
                 Info.Idx = typeof(Second) == "table" and First or nil
             else
@@ -4725,6 +4778,8 @@ do
 
             Risky = Info.Risky,
             Disabled = Info.Disabled,
+            Lock = Info.Lock,
+            ColorText = Info.ColorText,
             Visible = Info.Visible,
 
             Tween = nil,
@@ -4770,6 +4825,16 @@ do
                 })
             )
 
+            if Button.ColorText then
+                local ResolvedColorText = Library:ResolveColorText(Button.ColorText)
+                if ResolvedColorText then
+                    Base.TextColor3 = ResolvedColorText
+                    if Library.Registry[Base] then
+                        Library.Registry[Base].TextColor3 = nil
+                    end
+                end
+            end
+
             return Base, Stroke
         end
 
@@ -4796,7 +4861,7 @@ do
             end)
 
             Button.Base.MouseButton1Click:Connect(function()
-                if Button.Disabled or Button.Locked then
+                if Button.Disabled or Button.Locked or Button.Lock then
                     return
                 end
 
@@ -4810,8 +4875,15 @@ do
                     local Clicked = WaitForEvent(Button.Base.MouseButton1Click, 0.5)
 
                     Button.Base.Text = Button.Text
-                    Button.Base.TextColor3 = Button.Risky and Library.Scheme.RedColor or Library.Scheme.FontColor
-                    Library.Registry[Button.Base].TextColor3 = Button.Risky and "RedColor" or "FontColor"
+
+                    local ColorTextResolved = Button.ColorText and Library:ResolveColorText(Button.ColorText)
+                    if ColorTextResolved then
+                        Button.Base.TextColor3 = ColorTextResolved
+                        Library.Registry[Button.Base].TextColor3 = nil
+                    else
+                        Button.Base.TextColor3 = Button.Risky and Library.Scheme.RedColor or Library.Scheme.FontColor
+                        Library.Registry[Button.Base].TextColor3 = Button.Risky and "RedColor" or "FontColor"
+                    end
 
                     if Clicked then
                         Library:SafeCallback(Button.Func)
@@ -4846,6 +4918,8 @@ do
 
                 Risky = Info.Risky,
                 Disabled = Info.Disabled,
+                Lock = Info.Lock,
+                ColorText = Info.ColorText,
                 Visible = Info.Visible,
 
                 Tween = nil,
@@ -5071,6 +5145,8 @@ do
 
             Risky = Info.Risky,
             Disabled = Info.Disabled,
+            Lock = Info.Lock,
+            ColorText = Info.ColorText,
             Visible = Info.Visible,
 
             Addons = {},
@@ -5179,7 +5255,7 @@ do
         end
 
         function Toggle:SetValue(Value)
-            if Toggle.Disabled then
+            if Toggle.Disabled or Toggle.Lock then
                 return
             end
 
@@ -5245,6 +5321,14 @@ do
         if Toggle.Risky then
             Label.TextColor3 = Library.Scheme.RedColor
             Library.Registry[Label].TextColor3 = "RedColor"
+        end
+
+        if Toggle.ColorText then
+            local ResolvedColorText = Library:ResolveColorText(Toggle.ColorText)
+            if ResolvedColorText then
+                Label.TextColor3 = ResolvedColorText
+                Library.Registry[Label].TextColor3 = nil
+            end
         end
 
         Toggle:Display()
@@ -5327,6 +5411,8 @@ do
 
             Risky = Info.Risky,
             Disabled = Info.Disabled,
+            Lock = Info.Lock,
+            ColorText = Info.ColorText,
             Visible = Info.Visible,
 
             Addons = {},
@@ -5451,7 +5537,7 @@ do
         end
 
         function Toggle:SetValue(Value)
-            if Toggle.Disabled then
+            if Toggle.Disabled or Toggle.Lock then
                 return
             end
 
@@ -5517,6 +5603,14 @@ do
         if Toggle.Risky then
             Label.TextColor3 = Library.Scheme.RedColor
             Library.Registry[Label].TextColor3 = "RedColor"
+        end
+
+        if Toggle.ColorText then
+            local ResolvedColorText = Library:ResolveColorText(Toggle.ColorText)
+            if ResolvedColorText then
+                Label.TextColor3 = ResolvedColorText
+                Library.Registry[Label].TextColor3 = nil
+            end
         end
 
         Toggle:Display()
@@ -8574,6 +8668,19 @@ function Library:CreateWindow(WindowInfo)
                 Size = WindowInfo.IconSize,
                 Parent = TitleHolder,
             })
+
+            if WindowInfo.IconColor then
+                if Library.Scheme[WindowInfo.IconColor] then
+                    WindowIcon.ImageColor3 = Library.Scheme[WindowInfo.IconColor]
+                    Library.Registry[WindowIcon] = Library.Registry[WindowIcon] or {}
+                    Library.Registry[WindowIcon].ImageColor3 = WindowInfo.IconColor
+                else
+                    local ResolvedIconColor = Library:ResolveColorText(WindowInfo.IconColor)
+                    if ResolvedIconColor then
+                        WindowIcon.ImageColor3 = ResolvedIconColor
+                    end
+                end
+            end
         else
             WindowIcon = New("TextLabel", {
                 BackgroundTransparency = 1,
