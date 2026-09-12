@@ -11285,6 +11285,9 @@ ToggleIcon.Position = UDim2.new(0.5, 0, 0.5, 0)
 ToggleIcon.ZIndex = ToggleButton.Button.ZIndex + 1
 ToggleIcon.Parent = ToggleButton.Button
 
+ToggleIcon.ImageColor3 = Library.Scheme.AccentColor
+Library.Registry[ToggleIcon] = { ImageColor3 = "AccentColor" }
+
 local IconAspect = Instance.new("UIAspectRatioConstraint")
 IconAspect.AspectRatio = 1
 IconAspect.Parent = ToggleIcon
