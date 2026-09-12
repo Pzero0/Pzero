@@ -56,58 +56,61 @@ local ThemeManager = {
     ContrastLabel = nil,
     ContrastWasPoor = false,
 
-BuiltInThemes = {
-    ["Default"] = {
-        1,
-        { FontColor = "ffffff", MainColor = "191919", AccentColor = "7d55ff", BackgroundColor = "0f0f0f", OutlineColor = "282828", BackgroundImage = "" },
-    },
-    ["Cyberpunk"] = {
-        2,
-        { FontColor = "f9f9f9", MainColor = "262335", AccentColor = "00ff9f", BackgroundColor = "1a1a2e", OutlineColor = "413c5e", BackgroundImage = "" },
-    },
-    ["Material"] = {
-        3,
-        { FontColor = "eeffff", MainColor = "212121", AccentColor = "82aaff", BackgroundColor = "151515", OutlineColor = "424242", BackgroundImage = "" },
-    },
-    ["Mono Dark"] = {
-        4,
-        { FontColor = "ffffff", MainColor = "191919", AccentColor = "ffffff", BackgroundColor = "0e0e0e", OutlineColor = "343232", BackgroundImage = "" },
-    },
-    ["Mono Charcoal"] = {
-        5,
-        { FontColor = "ffffff", MainColor = "1e1e1e", AccentColor = "ffffff", BackgroundColor = "232323", OutlineColor = "141414", BackgroundImage = "" },
-    },
-    ["Purple Slate"] = {
-        6,
-        { FontColor = "abb2bf", MainColor = "282c34", AccentColor = "c677dd", BackgroundColor = "21252b", OutlineColor = "5c6270", BackgroundImage = "" },
-    },
-    ["Violet Dream"] = {
-        7,
-        { FontColor = "f3e8ff", MainColor = "2a1a3e", AccentColor = "b57edc", BackgroundColor = "1a0f2e", OutlineColor = "4a2f6e", BackgroundImage = "" },
-    },
-    ["Royal Purple"] = {
-        8,
-        { FontColor = "ffffff", MainColor = "2d1b4e", AccentColor = "a855f7", BackgroundColor = "1a0f33", OutlineColor = "4c2a85", BackgroundImage = "" },
-    },
-    ["Midnight Amethyst"] = {
-        9,
-        { FontColor = "ede9fe", MainColor = "241b3a", AccentColor = "c084fc", BackgroundColor = "140d24", OutlineColor = "3d2a5c", BackgroundImage = "" },
-    },
-    ["Neon Grape"] = {
-        10,
-        { FontColor = "f5f3ff", MainColor = "1f1b2e", AccentColor = "8b5cf6", BackgroundColor = "120f1c", OutlineColor = "3b3552", BackgroundImage = "" },
-    },
-    ["Lavender Haze"] = {
-        11,
-        { FontColor = "faf5ff", MainColor = "322a4d", AccentColor = "d8b4fe", BackgroundColor = "1e1830", OutlineColor = "54476e", BackgroundImage = "" },
-    },
-    ["Obsidian Rose"] = {
-        12,
-        { FontColor = "fce7f3", MainColor = "2b1622", AccentColor = "f472b6", BackgroundColor = "180b13", OutlineColor = "4a2438", BackgroundImage = "" },
-    },
-    ["Deep Space"] = {
-        13,
-        { FontColor = "e0e7ff", MainColor = "1e1b4b", AccentColor = "6366f1", BackgroundColor = "0f0d2e", OutlineColor = "312e81", BackgroundImage = "" },
+    --// Default is a hidden fallback used internally. It is NOT shown in the theme dropdown.
+    --// To change the startup theme, edit the ThemeManager:SaveDefault(...) call inside CreateThemeManager.
+    BuiltInThemes = {
+        ["Default"] = {
+            1,
+            { FontColor = "ffffff", MainColor = "191919", AccentColor = "7d55ff", BackgroundColor = "0f0f0f", OutlineColor = "282828", BackgroundImage = "" },
+        },
+        ["Cyberpunk"] = {
+            2,
+            { FontColor = "f9f9f9", MainColor = "262335", AccentColor = "00ff9f", BackgroundColor = "1a1a2e", OutlineColor = "413c5e", BackgroundImage = "" },
+        },
+        ["Material"] = {
+            3,
+            { FontColor = "eeffff", MainColor = "212121", AccentColor = "82aaff", BackgroundColor = "151515", OutlineColor = "424242", BackgroundImage = "" },
+        },
+        ["Mono Dark"] = {
+            4,
+            { FontColor = "ffffff", MainColor = "191919", AccentColor = "ffffff", BackgroundColor = "0e0e0e", OutlineColor = "343232", BackgroundImage = "" },
+        },
+        ["Mono Charcoal"] = {
+            5,
+            { FontColor = "ffffff", MainColor = "1e1e1e", AccentColor = "ffffff", BackgroundColor = "232323", OutlineColor = "141414", BackgroundImage = "" },
+        },
+        ["Purple Slate"] = {
+            6,
+            { FontColor = "abb2bf", MainColor = "282c34", AccentColor = "c677dd", BackgroundColor = "21252b", OutlineColor = "5c6270", BackgroundImage = "" },
+        },
+        ["Violet Dream"] = {
+            7,
+            { FontColor = "f3e8ff", MainColor = "2a1a3e", AccentColor = "b57edc", BackgroundColor = "1a0f2e", OutlineColor = "4a2f6e", BackgroundImage = "" },
+        },
+        ["Royal Purple"] = {
+            8,
+            { FontColor = "ffffff", MainColor = "2d1b4e", AccentColor = "a855f7", BackgroundColor = "1a0f33", OutlineColor = "4c2a85", BackgroundImage = "" },
+        },
+        ["Midnight Amethyst"] = {
+            9,
+            { FontColor = "ede9fe", MainColor = "241b3a", AccentColor = "c084fc", BackgroundColor = "140d24", OutlineColor = "3d2a5c", BackgroundImage = "" },
+        },
+        ["Neon Grape"] = {
+            10,
+            { FontColor = "f5f3ff", MainColor = "1f1b2e", AccentColor = "8b5cf6", BackgroundColor = "120f1c", OutlineColor = "3b3552", BackgroundImage = "" },
+        },
+        ["Lavender Haze"] = {
+            11,
+            { FontColor = "faf5ff", MainColor = "322a4d", AccentColor = "d8b4fe", BackgroundColor = "1e1830", OutlineColor = "54476e", BackgroundImage = "" },
+        },
+        ["Obsidian Rose"] = {
+            12,
+            { FontColor = "fce7f3", MainColor = "2b1622", AccentColor = "f472b6", BackgroundColor = "180b13", OutlineColor = "4a2438", BackgroundImage = "" },
+        },
+        ["Deep Space"] = {
+            13,
+            { FontColor = "e0e7ff", MainColor = "1e1b4b", AccentColor = "6366f1", BackgroundColor = "0f0d2e", OutlineColor = "312e81", BackgroundImage = "" },
+        },
     },
 }
 
@@ -750,9 +753,12 @@ end
 function ThemeManager:CreateThemeManager(Themesbox: any)
     assert(ThemeManager.Library, "Library is not set, call ThemeManager:SetLibrary(Library) first.")
 
+    --// Build the visible theme list, but skip the hidden "Default" fallback
     local BuiltInThemesNames = {}
     for Name, _ThemeData in ThemeManager.BuiltInThemes do
-        table.insert(BuiltInThemesNames, Name)
+        if Name ~= "Default" then
+            table.insert(BuiltInThemesNames, Name)
+        end
     end
 
     local CustomThemeList, CustomThemeName, ThemeList, FontFace, BackgroundImage, DefaultThemeLabel, ThemeJSONInput
@@ -1119,7 +1125,14 @@ function ThemeManager:CreateThemeManager(Themesbox: any)
     FontFace:OnChanged(function(Value) ThemeManager.Library:SetFont(Enum.Font[Value]) end)
     BackgroundImage:OnChanged(function(Value) ThemeManager.Library:SetBackgroundImage(Value) end)
 
-    --// Load default
+    --// ============================================================
+    --// STARTUP THEME — change "Cyberpunk" to any theme you want
+    --// Options: Cyberpunk, Material, Mono Dark, Mono Charcoal,
+    --//          Purple Slate, Violet Dream, Royal Purple,
+    --//          Midnight Amethyst, Neon Grape, Lavender Haze,
+    --//          Obsidian Rose, Deep Space
+    --// ============================================================
+    ThemeManager:SaveDefault("Violet Dream")   -- 👈 YOUR STARTUP THEME HERE
     ThemeManager:LoadDefault()
     ThemeManager:UpdateContrastWarning()
     ThemeManager.AppliedToTab = true
