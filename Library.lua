@@ -11384,7 +11384,7 @@ end
 local ToggleIcon = Instance.new("ImageLabel")
 ToggleIcon.Name = "Icon"
 ToggleIcon.BackgroundTransparency = 1
-ToggleIcon.Image = "rbxassetid://100814885802041"
+ToggleIcon.Image = "rbxassetid://119372032314575"
 ToggleIcon.ScaleType = Enum.ScaleType.Fit
 ToggleIcon.Size = UDim2.new(1, 0, 1, 0)
 ToggleIcon.AnchorPoint = Vector2.new(0.5, 0.5)
