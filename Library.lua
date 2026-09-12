@@ -11258,7 +11258,7 @@ end, true, true)
 
 ToggleButton.Button.Size = UDim2.fromOffset(44, 44)
 ToggleButton.Button.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
-ToggleButton.Button.BackgroundTransparency = 0.2
+ToggleButton.Button.BackgroundTransparency = 0
 ToggleButton.Button.ClipsDescendants = true
 
 local Corner = ToggleButton.Button:FindFirstChildOfClass("UICorner")
@@ -11266,6 +11266,7 @@ if not Corner then
     Corner = Instance.new("UICorner")
     Corner.Parent = ToggleButton.Button
 end
+Corner.CornerRadius = UDim.new(1, 0)
 
 for _, child in ipairs(ToggleButton.Button:GetChildren()) do
     if child:IsA("TextLabel") or child:IsA("TextButton") then
@@ -11289,12 +11290,8 @@ IconAspect.AspectRatio = 1
 IconAspect.Parent = ToggleIcon
 
 local IconCorner = Instance.new("UICorner")
-IconCorner.CornerRadius = Corner.CornerRadius
+IconCorner.CornerRadius = UDim.new(1, 0)
 IconCorner.Parent = ToggleIcon
-
-Corner:GetPropertyChangedSignal("CornerRadius"):Connect(function()
-    IconCorner.CornerRadius = Corner.CornerRadius
-end)
 
 if WindowInfo.MobileButtonsSide == "Right" then
     ToggleButton.Button.AnchorPoint = Vector2.new(1, 0)
