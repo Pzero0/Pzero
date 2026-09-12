@@ -57,52 +57,56 @@ local ThemeManager = {
     ContrastWasPoor = false,
 
 BuiltInThemes = {
-    ["Cyberpunk"] = {
+    ["Default"] = {
         1,
+        { FontColor = "ffffff", MainColor = "191919", AccentColor = "7d55ff", BackgroundColor = "0f0f0f", OutlineColor = "282828", BackgroundImage = "" },
+    },
+    ["Cyberpunk"] = {
+        2,
         { FontColor = "f9f9f9", MainColor = "262335", AccentColor = "00ff9f", BackgroundColor = "1a1a2e", OutlineColor = "413c5e", BackgroundImage = "" },
     },
     ["Material"] = {
-        2,
+        3,
         { FontColor = "eeffff", MainColor = "212121", AccentColor = "82aaff", BackgroundColor = "151515", OutlineColor = "424242", BackgroundImage = "" },
     },
     ["Mono Dark"] = {
-        3,
+        4,
         { FontColor = "ffffff", MainColor = "191919", AccentColor = "ffffff", BackgroundColor = "0e0e0e", OutlineColor = "343232", BackgroundImage = "" },
     },
     ["Mono Charcoal"] = {
-        4,
+        5,
         { FontColor = "ffffff", MainColor = "1e1e1e", AccentColor = "ffffff", BackgroundColor = "232323", OutlineColor = "141414", BackgroundImage = "" },
     },
     ["Purple Slate"] = {
-        5,
+        6,
         { FontColor = "abb2bf", MainColor = "282c34", AccentColor = "c677dd", BackgroundColor = "21252b", OutlineColor = "5c6270", BackgroundImage = "" },
     },
     ["Violet Dream"] = {
-        6,
+        7,
         { FontColor = "f3e8ff", MainColor = "2a1a3e", AccentColor = "b57edc", BackgroundColor = "1a0f2e", OutlineColor = "4a2f6e", BackgroundImage = "" },
     },
     ["Royal Purple"] = {
-        7,
+        8,
         { FontColor = "ffffff", MainColor = "2d1b4e", AccentColor = "a855f7", BackgroundColor = "1a0f33", OutlineColor = "4c2a85", BackgroundImage = "" },
     },
     ["Midnight Amethyst"] = {
-        8,
+        9,
         { FontColor = "ede9fe", MainColor = "241b3a", AccentColor = "c084fc", BackgroundColor = "140d24", OutlineColor = "3d2a5c", BackgroundImage = "" },
     },
     ["Neon Grape"] = {
-        9,
+        10,
         { FontColor = "f5f3ff", MainColor = "1f1b2e", AccentColor = "8b5cf6", BackgroundColor = "120f1c", OutlineColor = "3b3552", BackgroundImage = "" },
     },
     ["Lavender Haze"] = {
-        10,
+        11,
         { FontColor = "faf5ff", MainColor = "322a4d", AccentColor = "d8b4fe", BackgroundColor = "1e1830", OutlineColor = "54476e", BackgroundImage = "" },
     },
     ["Obsidian Rose"] = {
-        11,
+        12,
         { FontColor = "fce7f3", MainColor = "2b1622", AccentColor = "f472b6", BackgroundColor = "180b13", OutlineColor = "4a2438", BackgroundImage = "" },
     },
     ["Deep Space"] = {
-        12,
+        13,
         { FontColor = "e0e7ff", MainColor = "1e1b4b", AccentColor = "6366f1", BackgroundColor = "0f0d2e", OutlineColor = "312e81", BackgroundImage = "" },
     },
 }
