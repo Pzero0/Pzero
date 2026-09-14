@@ -1,3 +1,7 @@
+import themeCode from './addons/theme.js';
+import saveCode from './addons/save.js';
+
+const mainLibraryScript = String.raw`
 local cloneref = (cloneref or clonereference or function(instance: any)
     return instance
 end)
@@ -9028,7 +9032,7 @@ function Library:CreateWindow(WindowInfo)
 
     function Window:SetCornerRadius(Radius: number)
         assert(typeof(Radius) == "number", "Expected number for Radius got: " .. typeof(Radius))
-        Radius = math.min(Radius, 20)
+        Radius = math.min(Radius, 8)
 
         local RadiusHalf = UDim.new(0, Radius / 2)
         local RadiusUDim = UDim.new(0, Radius)
@@ -12262,3 +12266,26 @@ end
 
 getgenv().Library = Library
 return Library
+`;
+
+const routes = {
+  '/theme': themeCode,
+  '/save': saveCode,
+};
+
+export default {
+  async fetch(request) {
+    const path = new URL(request.url).pathname
+      .toLowerCase()
+      .replace(/\/$/, ''); // strip trailing slash
+
+    const responseCode = routes[path] ?? mainLibraryScript;
+
+    return new Response(responseCode, {
+      headers: {
+        'Content-Type': 'text/plain; charset=utf-8',
+        'Access-Control-Allow-Origin': '*',
+      },
+    });
+  },
+};
