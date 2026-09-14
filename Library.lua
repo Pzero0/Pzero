@@ -1,7 +1,3 @@
-import themeCode from './addons/theme.js';
-import saveCode from './addons/save.js';
-
-const mainLibraryScript = String.raw`
 local cloneref = (cloneref or clonereference or function(instance: any)
     return instance
 end)
@@ -12266,26 +12262,3 @@ end
 
 getgenv().Library = Library
 return Library
-`;
-
-const routes = {
-  '/theme': themeCode,
-  '/save': saveCode,
-};
-
-export default {
-  async fetch(request) {
-    const path = new URL(request.url).pathname
-      .toLowerCase()
-      .replace(/\/$/, ''); // strip trailing slash
-
-    const responseCode = routes[path] ?? mainLibraryScript;
-
-    return new Response(responseCode, {
-      headers: {
-        'Content-Type': 'text/plain; charset=utf-8',
-        'Access-Control-Allow-Origin': '*',
-      },
-    });
-  },
-};
