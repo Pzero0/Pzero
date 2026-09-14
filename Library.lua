@@ -9028,7 +9028,7 @@ function Library:CreateWindow(WindowInfo)
 
     function Window:SetCornerRadius(Radius: number)
         assert(typeof(Radius) == "number", "Expected number for Radius got: " .. typeof(Radius))
-        Radius = math.min(Radius, 8)
+        Radius = math.min(Radius, 30)
 
         local RadiusHalf = UDim.new(0, Radius / 2)
         local RadiusUDim = UDim.new(0, Radius)
@@ -11373,7 +11373,8 @@ if not Corner then
     Corner = Instance.new("UICorner")
     Corner.Parent = ToggleButton.Button
 end
-Corner.CornerRadius = UDim.new(1, 0)
+Corner.CornerRadius = UDim.new(0, Library.CornerRadius / 2)
+table.insert(Library.Corners, Corner)
 
 for _, child in ipairs(ToggleButton.Button:GetChildren()) do
     if child:IsA("TextLabel") or child:IsA("TextButton") then
@@ -11400,8 +11401,9 @@ IconAspect.AspectRatio = 1
 IconAspect.Parent = ToggleIcon
 
 local IconCorner = Instance.new("UICorner")
-IconCorner.CornerRadius = UDim.new(1, 0)
+IconCorner.CornerRadius = UDim.new(0, Library.CornerRadius / 2)
 IconCorner.Parent = ToggleIcon
+table.insert(Library.Corners, IconCorner)
 
 if WindowInfo.MobileButtonsSide == "Right" then
     ToggleButton.Button.AnchorPoint = Vector2.new(1, 0)
