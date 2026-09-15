@@ -9264,13 +9264,16 @@ function Library:CreateWindow(WindowInfo)
                 Parent = TabCanvas,
             })
 
-            TabFullContainer = New("Frame", {
-                AutomaticSize = Enum.AutomaticSize.Y,
-                BackgroundTransparency = 1,
-                Position = UDim2.fromScale(0, 0),
-                Size = UDim2.new(1, 0, 0, 0),
-                Parent = TabContainer,
-            })
+            TabFullContainer = New("ScrollingFrame", {
+    AutomaticCanvasSize = Enum.AutomaticSize.Y,
+    BackgroundTransparency = 1,
+    CanvasSize = UDim2.fromScale(0, 0),
+    ScrollBarImageTransparency = 0.5,
+    ScrollBarThickness = 3,
+    Position = UDim2.fromScale(0, 0),
+    Size = UDim2.new(1, 0, 0, 260), -- max height before it scrolls; raise/lower to taste
+    Parent = TabContainer,
+})
             New("UIListLayout", {
                 Padding = UDim.new(0, 6),
                 Parent = TabFullContainer,
