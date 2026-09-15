@@ -9028,7 +9028,7 @@ function Library:CreateWindow(WindowInfo)
 
     function Window:SetCornerRadius(Radius: number)
         assert(typeof(Radius) == "number", "Expected number for Radius got: " .. typeof(Radius))
-        Radius = math.min(Radius, 30)
+        Radius = math.min(Radius, 20)
 
         local RadiusHalf = UDim.new(0, Radius / 2)
         local RadiusUDim = UDim.new(0, Radius)
@@ -9194,6 +9194,7 @@ function Library:CreateWindow(WindowInfo)
         local TabCanvas
         local TabLeft
         local TabRight
+        local TabFullContainer
 
         Icon = Library:GetCustomIcon(Icon)
         do
@@ -9261,6 +9262,24 @@ function Library:CreateWindow(WindowInfo)
                 Size = UDim2.fromScale(1, 1),
                 Visible = true,
                 Parent = TabCanvas,
+            })
+
+            TabFullContainer = New("Frame", {
+                AutomaticSize = Enum.AutomaticSize.Y,
+                BackgroundTransparency = 1,
+                Position = UDim2.fromScale(0, 0),
+                Size = UDim2.new(1, 0, 0, 0),
+                Parent = TabContainer,
+            })
+            New("UIListLayout", {
+                Padding = UDim.new(0, 6),
+                Parent = TabFullContainer,
+            })
+            New("UIPadding", {
+                PaddingLeft = UDim.new(0, 2),
+                PaddingRight = UDim.new(0, 2),
+                PaddingTop = UDim.new(0, 2),
+                Parent = TabFullContainer,
             })
 
             TabLeft = New("ScrollingFrame", {
@@ -9519,11 +9538,18 @@ function Library:CreateWindow(WindowInfo)
 
         function Tab:RefreshSides()
             local Offset = WarningBoxHolder.Visible and WarningBox.Size.Y.Offset + 8 or 0
+            local FullWidthOffset = TabFullContainer.AbsoluteSize.Y > 0 and TabFullContainer.AbsoluteSize.Y + 6 or 0
+            Offset = Offset + FullWidthOffset
+
             for _, Side in Tab.Sides do
                 Side.Position = UDim2.new(Side.Position.X.Scale, 0, 0, Offset)
                 Side.Size = UDim2.new(0.5, -3, 1, -Offset)
             end
         end
+
+        TabFullContainer:GetPropertyChangedSignal("AbsoluteSize"):Connect(function()
+            Tab:RefreshSides()
+        end)
 
         function Tab:Resize(ResizeWarningBox: boolean?)
             if ResizeWarningBox then
@@ -9892,7 +9918,7 @@ function Library:CreateWindow(WindowInfo)
                 AutomaticSize = Enum.AutomaticSize.Y,
                 BackgroundTransparency = 1,
                 Size = UDim2.fromScale(1, 0),
-                Parent = Info.Side == 1 and TabLeft or TabRight,
+                Parent = Info.Side == 0 and TabFullContainer or (Info.Side == 1 and TabLeft or TabRight),
             })
             New("UIListLayout", {
                 Padding = UDim.new(0, 6),
@@ -10176,6 +10202,10 @@ function Library:CreateWindow(WindowInfo)
 
         function Tab:AddRightGroupbox(Name, IconName, Visible, Collapsed, DisableCollapsing)
             return Tab:AddGroupbox({ Side = 2, Name = Name, IconName = IconName, Visible = Visible, Collapsed = Collapsed, DisableCollapsing = DisableCollapsing })
+        end
+
+        function Tab:AddFullGroupbox(Name, IconName, Visible, Collapsed, DisableCollapsing)
+            return Tab:AddGroupbox({ Side = 0, Name = Name, IconName = IconName, Visible = Visible, Collapsed = Collapsed, DisableCollapsing = DisableCollapsing })
         end
 
         function Tab:Hover(Hovering)
@@ -11373,8 +11403,7 @@ if not Corner then
     Corner = Instance.new("UICorner")
     Corner.Parent = ToggleButton.Button
 end
-Corner.CornerRadius = UDim.new(0, Library.CornerRadius / 2)
-table.insert(Library.Corners, Corner)
+Corner.CornerRadius = UDim.new(1, 0)
 
 for _, child in ipairs(ToggleButton.Button:GetChildren()) do
     if child:IsA("TextLabel") or child:IsA("TextButton") then
@@ -11385,7 +11414,7 @@ end
 local ToggleIcon = Instance.new("ImageLabel")
 ToggleIcon.Name = "Icon"
 ToggleIcon.BackgroundTransparency = 1
-ToggleIcon.Image = "rbxassetid://119372032314575"
+ToggleIcon.Image = "rbxassetid://100814885802041"
 ToggleIcon.ScaleType = Enum.ScaleType.Fit
 ToggleIcon.Size = UDim2.new(1, 0, 1, 0)
 ToggleIcon.AnchorPoint = Vector2.new(0.5, 0.5)
@@ -11401,9 +11430,8 @@ IconAspect.AspectRatio = 1
 IconAspect.Parent = ToggleIcon
 
 local IconCorner = Instance.new("UICorner")
-IconCorner.CornerRadius = UDim.new(0, Library.CornerRadius / 2)
+IconCorner.CornerRadius = UDim.new(1, 0)
 IconCorner.Parent = ToggleIcon
-table.insert(Library.Corners, IconCorner)
 
 if WindowInfo.MobileButtonsSide == "Right" then
     ToggleButton.Button.AnchorPoint = Vector2.new(1, 0)
